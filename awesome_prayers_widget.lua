@@ -2,6 +2,9 @@ local http = require 'socket.http'
 local json = require 'json'
 local ptw = widget({ type = "textbox" })
 
+local locale = "ar"
+local country = "Jordan"
+
 local pulses = {
   -- the widget update frequency (in seconds)
   refresh = 30,
@@ -14,6 +17,14 @@ local colors = {
   "green",
   "orange",
   "red"
+}
+
+local geographics = {
+  Jordan = {
+    latitude    = 31,
+    langtitude  = 36,
+    gmt         = month >= 4 and month < 10 and 3 or 2
+  }
 }
 
 local locales = {
@@ -45,7 +56,8 @@ local locales = {
   }
 }
 
-local locale = locales.ar
+locale = locales[locale]
+country = geographics[country]
 
 local function l(str)
   return locale[str] or str
@@ -115,9 +127,9 @@ local function fetch(year, month, day, day_seconds)
   -- Fetch the synchronized prayer times
   if not prayer_times then
     -- Latitude, Longtitude & GMT of Amman, Jordan
-    local latitude    = 31
-    local langtitude  = 36
-    local gmt         = month >= 4 and month < 10 and 3 or 2
+    local latitude    = country.latitude
+    local langtitude  = country.langtitude
+    local gmt         = country.gmt
 
     -- Retrieve prayer times for the given date
     local uri = "http://xhanch.com/api/islamic-get-prayer-time.php" ..
