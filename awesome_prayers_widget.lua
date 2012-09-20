@@ -23,7 +23,7 @@ local geographics = {
   Jordan = {
     latitude    = 31,
     langtitude  = 36,
-    gmt         = month >= 4 and month < 10 and 3 or 2
+    gmt         = function(month) return month >= 4 and month < 10 and 3 or 2 end
   }
 }
 
@@ -129,7 +129,7 @@ local function fetch(year, month, day, day_seconds)
     -- Latitude, Longtitude & GMT of Amman, Jordan
     local latitude    = country.latitude
     local langtitude  = country.langtitude
-    local gmt         = country.gmt
+    local gmt         = country.gmt(month)
 
     -- Retrieve prayer times for the given date
     local uri = "http://xhanch.com/api/islamic-get-prayer-time.php" ..
